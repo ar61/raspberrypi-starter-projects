@@ -3,6 +3,7 @@ import adafruit_ssd1306
 import requests
 from board import SDA, SCL
 import busio
+import os
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -17,7 +18,13 @@ i2c = busio.I2C(SCL, SDA)
 
 display = adafruit_ssd1306.SSD1306_I2C(128, 64, i2c)
 
-open_weather_map_url = "https://api.openweathermap.org/data/2.5/weather?q=south%20old%20bridge,USA&APPID=f2c5088da636b92ee1f1c5200acf4a00"
+token = os.environ.get("token")
+
+if token is None:
+    print("Noweather api token defined in environment var 'token'")
+    exit(0)
+
+open_weather_map_url = f'https://api.openweathermap.org/data/2.5/weather?q=south%20old%20bridge,USA&APPID={token}'
 
 while True:
     #display.clear()
